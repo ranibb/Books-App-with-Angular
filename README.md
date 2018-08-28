@@ -91,3 +91,66 @@ Now, you need to copy all the books list related content to that new component. 
 ```
 
 After finishing the refactoring, serve the application with ng serve and test in the browser that everything is still the same.
+
+Currently, we still don't show the whole list of books but just the first entry of the books array. To change that we need to generate a list item for each book in the books array. This is done by using the structural directive ngFor which is provided by angular to generate a list of elements based on a component array. The built-in structural directives are proceeded by a star '*'. So, within the li tag add a directive `*ngFor` and for the instruction in double quotes use the syntax `let book of books` to define a template input variable book and run through all the elements of the component's books array. Thus, ngFor does the following: It repeats the list item element and provide the respective element of the given array in a template variable. Now, all what we need to change is to replace the first book in the list that was hard coded by the template variable book.
+
+```HTML
+<ul>
+  <li *ngFor ="let book of books">
+      <img [src]="book.coverImage" [class.preview]="previewMode" (click) ="onClickImage()">
+    {{ book.authors[0] }} <strong>{{ books.title }}</strong>
+  </li>
+</ul>
+```
+
+Back in the browser, we now see a list of all the books contained in the component's books array. However, by clicking on a thumbnail all cover images resize not just the one we clicked on. The reason is that we defined previewMode as a global class property and not as a property of each book object. To change that, include the property previewMode in the book model.
+
+```TypeScript
+export class Book {
+    title: string
+    authors: string[]
+    coverImage: string
+    previewMode: true
+}
+```
+
+And remove it from the component class. Instead, initialize it with true in each element of the dummy data.
+
+```TypeScript
+books: Book[] = [
+  {
+    title: "Sunshine",
+    authors: ["Alex Garland"],
+    coverImage: "http://books.google.com/books/content?id=uqhlAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    previewMode : true
+  },
+  {
+    title: "Ex Machina",
+    authors: ["Alex Garland"],
+    coverImage: "http://books.google.com/books/content?id=yvFMBgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    previewMode : true
+  },
+  {
+    title: "Annihilation",
+    authors: ["Alex Garland"],
+    coverImage: "http://books.google.com/books/content?id=pjBHDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    previewMode : true
+  }
+];
+```
+
+In the books template, modify the class property binding. Also add the book variable as parameter to the event handler onClickImage.
+
+```HTML
+<img [src]="book.coverImage" [class.preview]="book.previewMode" (click) ="onClickImage(book)">
+```
+
+And update the onClickImage method in the component class.
+
+```TypeScript
+onClickImage(book) {
+  book.previewMode = !book.previewMode;
+}
+```
+
+Back in the browser, clicking on an item's thumbnail, now only the size of the clicked image should change, that’s because on click we send the individual book object clicked to the class and there we switch on and off the previewMode property of the respective book.

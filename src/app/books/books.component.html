@@ -1,6 +1,6 @@
 <ul>
-  <li>
-      <img [src]="books[0].coverImage" [class.preview]="previewMode" (click) ="onClickImage()">
-    {{ books[0].authors[0] }} <strong>{{ books[0].title }}</strong>
+  <li *ngFor ="let book of books">
+      <img [src]="book.coverImage" [class.preview]="book.previewMode" (click) ="onClickImage(book)">
+    {{ book.authors[0] }} <strong>{{ books.title }}</strong>
   </li>
 </ul>
