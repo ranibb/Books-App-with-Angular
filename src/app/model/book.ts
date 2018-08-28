@@ -1,6 +1,9 @@
 export class Book {
-    title: string
-    authors: string[]
-    coverImage: string
+    constructor(public title: string, public authors: string[], public coverImage: string) {
+        this.previewMode = true;
+    }
     previewMode: true
+    getAuthorsList() : string {
+        return this.authors.join(", ");
+    }
 }

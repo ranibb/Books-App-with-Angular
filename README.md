@@ -154,3 +154,66 @@ onClickImage(book) {
 ```
 
 Back in the browser, clicking on an item's thumbnail, now only the size of the clicked image should change, that’s because on click we send the individual book object clicked to the class and there we switch on and off the previewMode property of the respective book.
+
+One aspect we didn't care about yet is a case of multiple authors which is not reflected in our test data right now. Currently we just render the first author in a list of authors. In order to take account of that, we add a method getAuthorsList in the class that is modeling the book data. The method returns a string which is built by joining the authors separated by a comma.
+
+```TypeScript
+export class Book {
+    title: string
+    authors: string[]
+    coverImage: string
+    previewMode: true
+    getAuthorsList() : string {
+        return this.authors.join(", ");
+    }
+}
+```
+
+In the template of the books component we then use this method to display the list of authors.
+
+```HTML
+<ul>
+  <li *ngFor ="let book of books">
+      <img [src]="book.coverImage" [class.preview]="book.previewMode" (click) ="onClickImage(book)">
+      {{ book.getAuthorsList() }} <strong>{{ books.title }}</strong>
+  </li>
+</ul>
+```
+
+One more thing we should add in the model class is a class constructor used to create book objects. We use the class properties title, authors and coverImage as constructor parameters since these properties have to be supplied from outside the class. On the other hand, previewMode is not provided from outside but is initialized to true for all new objects.
+
+```TypeScript
+export class Book {
+    constructor(public title: string, public authors: string[], public coverImage: string) {
+        this.previewMode = true;
+    }
+    previewMode: true
+    getAuthorsList() : string {
+        return this.authors.join(", ");
+    }
+}
+```
+
+In the books component we modify the definition of the test data accordingly using the class constructor to create a dummy data.
+
+```TypeScript
+books: Book[] = [
+  new Book(
+    "Sunshine",
+    ["Alex Garland"],
+    "http://books.google.com/books/content?id=uqhlAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+  ),
+  new Book(
+    "Ex Machina",
+    ["Alex Garland"],
+    "http://books.google.com/books/content?id=yvFMBgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+  ),
+  new Book(
+    "Annihilation",
+    ["Alex Garland"],
+    "http://books.google.com/books/content?id=pjBHDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+  )
+];
+```
+
+Back in the browser, check that everything still working as before. So far, we talked about the angular component architecture, different ways of data binding for coordinating the component class with the view template and we used an angular directive to generate DOM elements.
