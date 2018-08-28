@@ -1,0 +1,11 @@
+.container {
+    width: 600px;
+}
+
+.preview {
+    height: 40px;
+}
+
+ul {
+    list-style-type: none;
+}
