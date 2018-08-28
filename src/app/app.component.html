@@ -5,10 +5,4 @@
     </h1>
   </div>
 </div>
-<br>
-<ul>
-  <li>
-      <img [src]="books[0].coverImage" [class.preview]="previewMode" (click) ="onClickImage()">
-    {{ books[0].authors[0] }} <strong>{{ books[0].title }}</strong>
-  </li>
-</ul>
+<app-books></app-books>

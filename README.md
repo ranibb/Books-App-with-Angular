@@ -74,3 +74,20 @@ by setting previewMode to true, we have the same situation as before, the previe
 ```
 
 At this point, we learned about three of the four fundamental ways of data binding in angular; interpolation and property binding where data is pushed from the class into the HTML and event binding where the data flows the opposite direction from the view to the component class. The remaining type is two-way binding, where data flows in both directions and in which we will come across later.
+
+For now, let’s go back to our small project and observe that all the content is at the moment included in the app's root component. when the app grows bigger, it is not practical to keep everything in a single component. For refactoring the code, start with creating a separate books component for showing the books list. This is done by the CLI command "ng generate component" followed by the "component-name". So, within the terminal submit the command `ng generate component books`. Then, angular creates a component books as a child of the root component.
+
+Now, you need to copy all the books list related content to that new component. Also check that the angular CLI automatically assign the selector 'app-books' for including the books component in the parent template. In this case, we include the books component in the root component.
+
+```HTML
+<div class="container">
+  <div style="text-align:center">
+    <h1>
+      Welcome to {{ title }}!
+    </h1>
+  </div>
+</div>
+<app-books></app-books>
+```
+
+After finishing the refactoring, serve the application with ng serve and test in the browser that everything is still the same.
