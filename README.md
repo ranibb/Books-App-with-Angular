@@ -229,3 +229,29 @@ We didn't take about angular modules so far. Modules are used to group component
 Now that we provided the service, we can consume it in the books component. For that import the service class with a TypeScript import statement. Add a class property to hold the books data. Inject the book service in the class constructor. And in the method ngOnInit retrieve the data from the service and assign it to the books property. Behind the scene, angular injects an instance of the book service when creating the component. And at time of initializing the component, that’s when the life cycle method ngOnInit is called, the data is fetched by the book service and stored in the component’s books property.
 
 To sum up what we have learned so far, we learned how to setup a basic angular app using Angular CLI and on our way we came across some of the key concepts of Angular; components, data binding, directives and services. Next, we use Angular forms to implement a two-way data binding for a simple input box and instead of hard-coding some dummy data, we retrieve the books data from Google’s book API via angular HttpClient. Furthermore, we briefly look at angular's modular and component architecture and libraries used for improving the app's UI.
+
+## Extending the BooksApp! by two angular modules; the Forms module and the HttpClient
+
+(Angular Forms Module and Two-Way Binding) First, we add a search box on top of the book list and implement some logic to search books for a specific author. Then we include the forms module which contains the attribute directive ngModule. With ngModule we can implement Two-Way data binding, synchronizing the input value in the search box with a property in the component class.
+
+(Client-Server Communication) Next, we are going to request books data from Google’s book API using Angular's HttpClient. To retrieve the data asynchronously we use TypeScript promises.
+
+(Outlook) Moreover, we will talk a little bit about angular's modular and component architecture and about improving the app's UI using external UI libraries like Angular Material.
+
+### Angular Forms Module and Two-Way Binding
+
+Open the books template and add a div at the top with three elements inside of it:
+
+* A label search for author for the input box with id author
+* The input box itself with name and id both equals author
+* The submit button.
+
+```HTML
+<div>
+  <label for="author">Search for Authors:</label>
+  <input type="text" name="author" id="author">
+  <button type="submit">Submit</button>
+</div>
+```
+
+When done, serve the application with `ng serve` and check in the browser that the search box appears in the view.

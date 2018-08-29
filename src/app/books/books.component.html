@@ -1,3 +1,8 @@
+<div>
+  <label for="author">Search for Authors:</label>
+  <input type="text" name="author" id="author">
+  <button type="submit">Submit</button>
+</div>
 <ul>
   <li *ngFor ="let book of books">
     <img [src]="book.coverImage" [class.preview]="book.previewMode" (click) ="onClickImage(book)">
