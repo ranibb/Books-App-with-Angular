@@ -25,7 +25,10 @@ export class BookService {
 
   constructor() { }
 
-  getBooks() : Book[] {
-    return this.testData;
+  getBooks(author: string) : Book[] {
+    if (author == "Alex Garland") {
+      return this.testData;
+    }
+    else return [];
   }
 }

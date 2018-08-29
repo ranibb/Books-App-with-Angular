@@ -16,7 +16,15 @@ export class BooksComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.books = this.bookService.getBooks();
+    this.getBooks("");
+  }
+
+  onSubmit(author: string) {
+    this.getBooks(author)
+  }
+
+  private getBooks(author: string) {
+    this.books = this.bookService.getBooks(author)
   }
   
 }

@@ -1,7 +1,7 @@
 <div>
   <label for="author">Search for Authors:</label>
-  <input type="text" name="author" id="author">
-  <button type="submit">Submit</button>
+  <input #author type="text" name="author" id="author">
+  <button type="submit" (click)="onSubmit(author.value)">Submit</button>
 </div>
 <ul>
   <li *ngFor ="let book of books">

@@ -254,4 +254,37 @@ Open the books template and add a div at the top with three elements inside of i
 </div>
 ```
 
-When done, serve the application with `ng serve` and check in the browser that the search box appears in the view.
+When done, serve the application with `ng serve` and check in the browser that the search-box appears in the view.
+
+Next, we add some functionality to the new elements. For hinting the submit event add a click listener `onSubmit()` to the button. And in order to send the search-box's input on submit, add a reference variable `#author` to the input filed referencing the HTML input element. Then we call onSubmit with the value of the search-box's input as parameter; `onSubmit(author.value)`.
+
+For testing purposes, we also modify the code in the BookService and the BooksComponent classes:
+
+* In the BookService class, add a string parameter author in the getBooks method and only provide the test data when searching for Alex Garland. Otherwise, send an empty books array.
+
+```TypeScript
+getBooks(author: string) : Book[] {
+  if (author == "Alex Garland") {
+    return this.testData;
+  }
+  else return [];
+}
+```
+
+* In the BooksComponent class add a private method getBooks to retrieve the books for a search string provided as parameter and call this method in ngOnInit with empty search string. Also add onSubmit method with the search string sent along the submit event.
+
+```TypeScript
+ngOnInit() {
+  this.getBooks("");
+}
+
+onSubmit(author: string) {
+  this.getBooks(author)
+}
+
+private getBooks(author: string) {
+  this.books = this.bookService.getBooks(author)
+}
+```
+
+Finally, verify in the browser that it works as expected; Only in case we search for "Alex Garland", we retrieve the test data. Otherwise, no data is shown.
