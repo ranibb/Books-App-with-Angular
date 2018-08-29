@@ -217,3 +217,15 @@ books: Book[] = [
 ```
 
 Back in the browser, check that everything still working as before. So far, we talked about the angular component architecture, different ways of data binding for coordinating the component class with the view template and we used an angular directive to generate DOM elements.
+
+Now let’s talk about the angular service concept. A service is nothing else but an ordinary TypeScript class with a specific purpose like providing the data used in the component. In general, a component class should only contain the code required for controlling the component's view. The books component for instance, should include the event handlers and the properties displayed in the view but it should not include complex and resource intensive code for retrieving the books data from a data source. Such tasks should be delegated to a separate service class. In our case we will create a data service for providing the books data. This can be done by the angular CLI command "ng generate service" followed by the "name-of-the-service" in our case book `ng generate service book`.
+
+After the generation is complete, open the file book.service.ts and there import the book model. Also Move the dummy data from the books component to the book service and rename the property into testData and add a method getBooks that just returns the testData.
+
+To make the book service available in the book component, we have to add the service as a provider in the app module (app.module.ts), then the book service can be consumed by any component in that module.
+
+We didn't take about angular modules so far. Modules are used to group components together that belong to the same work flow or feature. In our simple application we have only the root module, called app module.
+
+Now that we provided the service, we can consume it in the books component. For that import the service class with a TypeScript import statement. Add a class property to hold the books data. Inject the book service in the class constructor. And in the method ngOnInit retrieve the data from the service and assign it to the books property. Behind the scene, angular injects an instance of the book service when creating the component. And at time of initializing the component, that’s when the life cycle method ngOnInit is called, the data is fetched by the book service and stored in the component’s books property.
+
+To sum up what we have learned so far, we learned how to setup a basic angular app using Angular CLI and on our way we came across some of the key concepts of Angular; components, data binding, directives and services. Next, we use Angular forms to implement a two-way data binding for a simple input box and instead of hard-coding some dummy data, we retrieve the books data from Google’s book API via angular HttpClient. Furthermore, we briefly look at angular's modular and component architecture and libraries used for improving the app's UI.
