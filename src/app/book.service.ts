@@ -1,34 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Book } from './model/book'
+import { HttpClient } from '@angular/common/http'
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
-  testData: Book[] = [
-    new Book(
-      "Sunshine",
-      ["Alex Garland"],
-      "http://books.google.com/books/content?id=uqhlAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-    ),
-    new Book(
-      "Ex Machina",
-      ["Alex Garland"],
-      "http://books.google.com/books/content?id=yvFMBgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-    ),
-    new Book(
-      "Annihilation",
-      ["Alex Garland"],
-      "http://books.google.com/books/content?id=pjBHDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
-    )
-  ];
+  apiRoot = "https://www.googleapis.com/books/v1/volumes"
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getBooks(author: string) : Book[] {
-    if (author == "Alex Garland") {
-      return this.testData;
-    }
-    else return [];
+  getBooks(author: string) : Promise<Book[]> {
+    return new Promise((resolve, reject) => {
+      let apiURL = `${this.apiRoot}?q=inauthor:"${author}"&langRestrict=en`;
+      this.http.get(apiURL).toPromise().then((data: any) => {
+        let results : Book[] = data.items.map(item => {
+          return new Book(
+            item.volumeInfo.title,
+            item.volumeInfo.authors,
+            item.volumeInfo.imageLinks.thumbnail
+          )
+        })
+        resolve(results);
+      });
+    });
   }
 }

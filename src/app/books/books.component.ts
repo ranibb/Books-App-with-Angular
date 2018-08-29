@@ -25,7 +25,9 @@ export class BooksComponent implements OnInit {
   }
 
   private getBooks() {
-    this.books = this.bookService.getBooks(this.searchString)
+    this.bookService.getBooks(this.searchString).then(data => {
+      this.books = data;
+    })
   }
 
 }

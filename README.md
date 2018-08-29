@@ -293,7 +293,7 @@ Up to this moment, the search form we created is very simple since it only conta
 
 Two-Way binding is a convenient alternative in a case where data flows in both directions. For instance, synchronizing the entry in our search-box with a property in the component class. Whenever the user adds the input, the class property is updated to reflect the current entry and whenever we change the value of the class property programmatically the input filed is updated with the respective value. Two-Way binding is implemented by the attribute directive ngModel.
 
-Before we take a look at the implementation, we have to add the FormsModule in app.module.ts. First, import the it from @angular/forms as a TypeScript module. And second, add it to the imports listed in the module's metadata.
+Before we take a look at the implementation, we have to add the FormsModule in app.module.ts. First, import it from @angular/forms as a TypeScript module. And second, add it to the imports listed in the module's metadata.
 
 As mentioned already ngModel is an attribute directive. We saw previously an example for a structural directive modifying the structure of the DOM, in a case of ngFor, generating new DOM elements. On the other hand, attribute directives change the appearance or behavior of elements.
 
@@ -307,3 +307,54 @@ ngModel is applied on a form control like the input field in the books template 
 Next, in the BooksComponent class add the property searchString and initialize it with an empty string. Also delete the author parameter from the class methods and call the service method with searchString as input. 
 
 Back to the browser and observe; Since Two-Way binding guarantees that property searchString reflects the entry in the search-box at any time, the app behaves the same way as before.
+
+Though we implemented a basic search we still provide dummy data for Alex Garland. Let's change that and connect to the Google's books API using angular's HttpClientModule. To begin with, we have to add the `HttpClientModule` in app.module.ts. First, import it from @angular/common/http as a TypeScript module. And second, add it to the imports listed in the module's metadata.
+
+Within the book service import the `HttpClient` from the same path and inject it into the class constructor. Then remove the testData and add a property apiRoot holding the root address for a volume search in Google's book API.
+
+We use asynchronous programming to retrieve data from the API. Therefore, the getBooks method doesn't return an array of books directly but a Promise of an array of type Book. The Promise we'll return is described by the two function parameters resolve and reject. When everything goes well, we resolve with an array of books resulting from our search and in the optional error case we call reject.
+
+```TypeScript
+getBooks(author: string) : Promise<Book[]> {
+  return new Promise((resolve, reject) => {
+
+  });
+}
+```
+
+Now let's do our job and get the search results as an array of book objects from Google's book API. The steps to take as follows:
+* First, we have to construct the request URL based on a search parameter author.
+* Second, we send the get request to that URL using the HttpClient and we get back data structured like in this (example)[https://www.googleapis.com/books/v1/volumes?q=inauthor:"Alex Garland"&langRestrict=en]. We are interested in the items array, which contains the list of books. However, each book is described by a lot of properties but in our book model we are only interested in three attributes; title, authors and the thumbnail. So, what we have to do is to map the data modeled in our own book model. And finally, we can resolve the resulting list of book objects.
+
+Now let's go back to the service implementation and start with constructing the URL. Write the URL as a TypeScript template string with the "apiRoot" property and the "author" parameter as " embed expressions". 
+
+```TypeScript
+let apiURL = `${this.apiRoot}?q=inauthor:"${author}"&langRestrict=en`;
+```
+
+Then use the get method of the HttpClient to send a get request to the URL. Since angular uses something called Observables instead of Promises for asynchronous tasks we convert the observable returned by the get method into a Promise. The data promised has a structure like the example link above. In order to convert it into an array of book objects we apply the method map on the items array and map each single element on a new book object. The book object is created by calling the constructor with a "title", list of "authors" and "thumbnail" as parameters. These properties are retrieved from the respective properties in a JSON sent back as a response by the API. Finally, resolve the promise with the resulting array of books.
+
+```TypeScript
+this.http.get(apiURL).toPromise().then((data: any) => {
+  let results : Book[] = data.items.map(item => {
+    return new Book(
+      item.volumeInfo.title,
+      item.volumeInfo.authors,
+      item.volumeInfo.imageLinks.thumbnail
+    )
+  })
+  resolve(results);
+});
+```
+
+In the books component modify the getBooks method to retrieve data asynchronously.
+
+```TypeScript
+private getBooks() {
+  this.bookService.getBooks(this.searchString).then(data => {
+    this.books = data;
+  })
+}
+```
+
+Now back to the browser, test the application by searching again for Alex Garland. As it seems the data service works as expected.
