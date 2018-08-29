@@ -232,7 +232,7 @@ To sum up what we have learned so far, we learned how to setup a basic angular a
 
 ## Extending the BooksApp! by two angular modules; the Forms module and the HttpClient
 
-(Angular Forms Module and Two-Way Binding) First, we add a search box on top of the book list and implement some logic to search books for a specific author. Then we include the forms module which contains the attribute directive ngModule. With ngModule we can implement Two-Way data binding, synchronizing the input value in the search box with a property in the component class.
+(Angular Forms Module and Two-Way Binding) First, we add a search box on top of the book list and implement some logic to search books for a specific author. Then we include the forms module which contains the attribute directive ngModel. With ngModel we can implement Two-Way data binding, synchronizing the input value in the search box with a property in the component class.
 
 (Client-Server Communication) Next, we are going to request books data from Google’s book API using Angular's HttpClient. To retrieve the data asynchronously we use TypeScript promises.
 
@@ -288,3 +288,22 @@ private getBooks(author: string) {
 ```
 
 Finally, verify in the browser that it works as expected; Only in case we search for "Alex Garland", we retrieve the test data. Otherwise, no data is shown.
+
+Up to this moment, the search form we created is very simple since it only contains a single input field and lacks features such as change tracking, form validation or error handling. All these things can be realized in a more complex setting using the angular's Forms module. The Forms module also contains support for Two-Way data binding. Earlier we covered variants of data binding where the data flows in one direction; either from the class to the view template as with interpolation and property binding or from the template back to the class as with the event binding.
+
+Two-Way binding is a convenient alternative in a case where data flows in both directions. For instance, synchronizing the entry in our search-box with a property in the component class. Whenever the user adds the input, the class property is updated to reflect the current entry and whenever we change the value of the class property programmatically the input filed is updated with the respective value. Two-Way binding is implemented by the attribute directive ngModel.
+
+Before we take a look at the implementation, we have to add the FormsModule in app.module.ts. First, import the it from @angular/forms as a TypeScript module. And second, add it to the imports listed in the module's metadata.
+
+As mentioned already ngModel is an attribute directive. We saw previously an example for a structural directive modifying the structure of the DOM, in a case of ngFor, generating new DOM elements. On the other hand, attribute directives change the appearance or behavior of elements.
+
+ngModel is applied on a form control like the input field in the books template and follows a two-way binding syntax which is also called banana in a box syntax since ngModel is enclosed by round and square brackets. Then we assign a class property to ngModel, in our case we might call the property searchString. The ngModel directive will then synchronzie the input's filed entry with the value of the class property searchString. Now that we use ngModel for Two-Way binding, the parameter in the event handler on submit becomes obsolete just as the reference variable for the input field.
+
+```HTML
+<input [(ngModel)]="searchString" type="text" name="author" id="author">
+<button type="submit" (click)="onSubmit()">Submit</button>
+```
+
+Next, in the BooksComponent class add the property searchString and initialize it with an empty string. Also delete the author parameter from the class methods and call the service method with searchString as input. 
+
+Back to the browser and observe; Since Two-Way binding guarantees that property searchString reflects the entry in the search-box at any time, the app behaves the same way as before.

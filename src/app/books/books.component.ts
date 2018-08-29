@@ -9,6 +9,7 @@ import { BookService } from '../book.service'
 })
 export class BooksComponent implements OnInit {
   books: Book[]
+  searchString = "";
   constructor (private bookService: BookService) {}
 
   onClickImage(book) {
@@ -16,15 +17,15 @@ export class BooksComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getBooks("");
+    this.getBooks();
   }
 
-  onSubmit(author: string) {
-    this.getBooks(author)
+  onSubmit() {
+    this.getBooks()
   }
 
-  private getBooks(author: string) {
-    this.books = this.bookService.getBooks(author)
+  private getBooks() {
+    this.books = this.bookService.getBooks(this.searchString)
   }
-  
+
 }
