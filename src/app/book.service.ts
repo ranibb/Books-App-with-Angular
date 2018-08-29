@@ -16,13 +16,22 @@ export class BookService {
       this.http.get(apiURL).toPromise().then((data: any) => {
         let results : Book[] = data.items.map(item => {
           return new Book(
-            item.volumeInfo.title,
-            item.volumeInfo.authors,
-            item.volumeInfo.imageLinks.thumbnail
+            this.getSafe(() => item.volumeInfo.title),
+            this.getSafe(() => item.volumeInfo.authors),
+            this.getSafe(() => item.volumeInfo.imageLinks.thumbnail)
           )
         })
         resolve(results);
       });
     });
   }
+
+  private getSafe<T> (f: () => T) : T {
+    try {
+      return f();
+    } catch (error) {
+      return undefined;
+    }
+  }
+
 }

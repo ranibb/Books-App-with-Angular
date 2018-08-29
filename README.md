@@ -358,3 +358,35 @@ private getBooks() {
 ```
 
 Now back to the browser, test the application by searching again for Alex Garland. As it seems the data service works as expected.
+
+However, by playing around with our simple BooksApp! we realize that for some inputs the view doesn't update. For example, when searching for Stephen Hawking, nothing happens, we still see the results for Alex Garland. So, what is the reason for that behavior? The reason is a run-time error which is not shown in the IDE, that because the log is written into the browser's console.
+
+To view the log Open chrome's developer console and observe the error message is telling us that property thumbnail doesn't exist on undefined. Obviously, the imageLinks property is missing in some of the items listed by the Google's book API. You can verify that by submitting the search (request for the author Stephen Hawking)[https://www.googleapis.com/books/v1/volumes?q=inauthor:%22Stephen%20Hawking%22&langRestrict=en] in the browser.
+
+For solving this problem, we have to check the existence of each property before accessing it. In deep object hierarchies this can be awkward if done manually and unfortunately TypeScript doesn't get support optional chaining. To implement safe access to the properties we write a method getSafe trying to access the property and in case the attempt fails, setting the value to undefined. For the implementation execute the function within a try block to retrieve the value and in the error case return undefined.
+
+```TypeScript
+  private getSafe<T> (f: () => T) : T {
+    try {
+      return f();
+    } catch (error) {
+      return undefined;
+    }
+  }
+```
+
+For the method input wrap the access property in a function and return the property value. Then apply the method on the three properties title, authors and thumbnail.
+
+```TypeScript
+this.getSafe(() => item.volumeInfo.title),
+this.getSafe(() => item.volumeInfo.authors),
+this.getSafe(() => item.volumeInfo.imageLinks.thumbnail)
+```
+
+Also take care of the case undefined when binding the src property to the thumbnail link in the view template.
+
+```HTML
+<img [src]="book.coverImage ? book.coverImage : ''" [class.preview]="book.previewMode" (click) ="onClickImage(book)">
+```
+
+Now back to the browser and check that now everything works correctly.
