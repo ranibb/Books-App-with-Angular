@@ -1,3 +1,9 @@
-.container {
-    width: 600px;
+.tm-section-title {
+    writing-mode: horizontal-tb;
+    color: rgba(255, 255, 255, 0.84);
+    background: rgba(200, 201, 196, 0.78);
+    padding: 1px 5px;
+    border-radius: 3px;
+    bottom: 10px;
+    text-align: center;
 }

@@ -1,7 +1,21 @@
-.preview {
-    height: 40px;
+.coverImage {
+    min-height: 90px;
 }
 
-ul {
-    list-style-type: none;
+@media (min-width: 960px) {
+    .coverImage {
+        min-height: 196px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .coverImage {
+        min-height: 159px;
+    }
+}
+
+@media (min-width: 1200px) {
+    /* .coverImage {
+        min-height: 154px;
+    } */
 }

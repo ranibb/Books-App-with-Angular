@@ -1,12 +1,29 @@
-<div>
-  <label for="author">Search for Authors:</label>
-  <input [(ngModel)]="searchString" type="text" name="author" id="author">
-  <button type="submit" (click)="onSubmit()">Submit</button>
+<div class="uk-margin">
+  <form class="uk-grid-small" uk-grid>
+      <div class="uk-width-auto">
+          <input class="uk-input uk-form-width-medium" [(ngModel)]="searchString" type="text" name="author" id="author" placeholder="Search for author...">
+      </div>
+      <div class="uk-width-expand@s">
+          <button class="uk-button uk-button-default" type="submit" (click)="onSubmit()">Submit</button>
+      </div>
+  </form>
 </div>
-<mat-card *ngFor ="let book of books">
-  <mat-card-header>
-    <mat-card-title><strong> {{ books.title }} </strong></mat-card-title>
-    <mat-card-subtitle> {{ book.getAuthorsList() }} </mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image [src]="book.coverImage ? book.coverImage : ''" >
-</mat-card>
+<hr>
+<div class="uk-margin">
+  <div>
+    <div class="uk-grid-match uk-grid-small uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-3@l" uk-grid>
+    <!-- <div class="uk-grid-small uk-child-width-1-1@s uk-child-width-1-3@m" uk-grid="masonry: true"> -->
+      <div *ngFor="let book of books">
+          <div class="uk-flex-middle uk-card uk-card-default uk-card-hover uk-card-small uk-grid-collapse uk-child-width-expand" uk-grid>
+            <div class="uk-padding-small uk-flex-middle uk-card-media-left uk-background-muted uk-text-center uk-width-1-4 uk-width-1-5@s uk-width-1-3@m">
+                <img class="coverImage" [src]="book.coverImage ? book.coverImage : ''">
+            </div>
+            <div class="uk-card-body">
+                <h3 class="uk-card-title">{{ book.title }}</h3>
+                <p class="uk-text-meta uk-margin-remove-top">{{ book.getAuthorsList() }}</p>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,20 @@
-<div class="container">
-  <div style="text-align:center">
-    <h1>
-      Welcome to {{ title }}!
-    </h1>
+<div class="uk-section">
+  <div class="uk-container">
+    <div class="uk-position-relative">
+      <div class="uk-height-large uk-padding uk-background-cover uk-overflow-hidden uk-light uk-flex uk-flex-top" style="background-image: url('../assets/images/tobias-fischer-185901-unsplash.jpg');">
+        <div class="uk-width-1-2@m uk-text-center uk-margin-auto uk-margin-auto-vertical uk-padding uk-overlay-primary">
+          <h1 class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin-auto-vertical">Welcome to {{ title }}!</h1>
+          <p>This App is powered by <a href="https://angular.io/">Angular</a> & <a href="https://getuikit.com/">UIKIT</a></p>
+        </div>
+      </div>
+      <div class="tm-section-title uk-position-bottom-center">
+          <span>Photo by <a href="https://unsplash.com/photos/PkbZahEG2Ng?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Tobias Fischer</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></span>
+      </div>
+    </div>
   </div>
 </div>
-<app-books></app-books>
+<div class="uk-section">
+  <div class="uk-container">
+    <app-books></app-books>
+  </div>
+</div>
