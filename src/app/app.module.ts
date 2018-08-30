@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BookService } from './book.service'
 import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
+import { MatCardModule } from '@angular/material/card'
 import { AppComponent } from './app.component';
 import { BooksComponent } from './books/books.component';
 
@@ -14,7 +15,8 @@ import { BooksComponent } from './books/books.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatCardModule,
   ],
   providers: [BookService],
   bootstrap: [AppComponent]

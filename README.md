@@ -308,6 +308,8 @@ Next, in the BooksComponent class add the property searchString and initialize i
 
 Back to the browser and observe; Since Two-Way binding guarantees that property searchString reflects the entry in the search-box at any time, the app behaves the same way as before.
 
+### Client-Server Communication
+
 Though we implemented a basic search we still provide dummy data for Alex Garland. Let's change that and connect to the Google's books API using angular's HttpClientModule. To begin with, we have to add the `HttpClientModule` in app.module.ts. First, import it from @angular/common/http as a TypeScript module. And second, add it to the imports listed in the module's metadata.
 
 Within the book service import the `HttpClient` from the same path and inject it into the class constructor. Then remove the testData and add a property apiRoot holding the root address for a volume search in Google's book API.
@@ -390,3 +392,45 @@ Also take care of the case undefined when binding the src property to the thumbn
 ```
 
 Now back to the browser and check that now everything works correctly.
+
+### Angular's modular and component architecture & UI libraries
+
+In our small application we only have one angular module, the root module, called AppModule (app.module.ts). Angular modules are not to be confused with TypeScript modules. 
+
+In TypeScript, each file is a module and as you know we use export and import statements for granting access to specific objects of those modules. In contrast, an angular module is a logical grouping for parts of the application dedicated to a common feature or workflow. 
+
+The components belonging to an angular module are stated in the Module's metadata which is described by the @ngModule decorator. In our simple scenario we just have one feature; the book search which is part of the root module. However, we use some standard libraries which are also come as angular modules; the FormsModule and HttpClientModule.
+
+```TypeScript
+@NgModule({
+  declarations: [
+    AppComponent,
+    BooksComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [BookService],
+  bootstrap: [AppComponent]
+})
+```
+
+In a more complex application, we can create our own feature modules for grouping the code with a common functionality. The application building blocks below the level of modules are mainly components.
+
+We have are already created our own BooksComponent as a child of the root component, AppComponent. However, when our solution becomes more sophisticated we should break the BooksComponent in its child components; the search form and the books list showing the search results. The books list could be further buildup of book item components, each representing the view of a single book in a books list. 
+
+By such an architecture we make our code more maintainable and reusable but we also need to care about communication between the components. In general child components will propagate events to the parent components by using event emitters and parent components will configure the child components by setting components parameters.
+
+#### Improving the App's UI
+
+When it comes to UI design we have the choice between various external libraries. Angular Material is a great library providing material design components for angular.
+
+We could render the books as cards with a title and author in the card header and the coverImage as a card image.
+
+Before we can use angular material, we have to install two packages, the angular material package `npm install @angular/material -S` and the angular CDK which stands for Component Development Kit which is required by angular material `npm install @angular/cdk -S`.
+
+Then we import the specific UI modules we want to use in our project. In our case the card Module into the app.module.ts. Also add the module to the angular module imports within the app module metadata.
+
+Now we are ready to use the card component in the books template instead of the unordered list.
