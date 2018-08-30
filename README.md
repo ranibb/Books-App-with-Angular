@@ -1,5 +1,7 @@
 # Front-end with Angular
 
+![Teaser Image](https://raw.githubusercontent.com/ranibb/Frontend-with-Angular/master/src/assets/images/teaser-image.jpg)
+
 We will explore the folders and files created by the Angular CLI. And by building a simple application, we will study the key concepts of angular: Components, Data Binding, Directives and Service.
 
 Components are used to control the different views that we use in a web app. A component consists of a controller class written in TypeScript and the view template.
